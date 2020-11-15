@@ -4,24 +4,30 @@
     <script src="https://cdn.jsdelivr.net/npm/p5@1.1.9/lib/p5.js"></script>
   </head>
   <body>
-  	<!-- <h2>This is a visialization of N queen problem</h2>
-  	<p>Start clicking the squre boxes, if it is a valid spot for the queen then you are allowed to place queen there, if not an alert will be pop up.</p>
-  	<table id="myTable" class="margin">
-  	</table> -->
+
   	<br/>
-  	<div class="explore_area">
-  		<!-- <label>Enter the numbers of squre</label>
-  		<input type="text" value="4" id="grid_number"> -->
+
+
+  	<div class="container" style="text-align:center">
+
+      <h1>Sorting Algorithm Visualizaer</h1>  
+
+      <h2>Select any sorting algorithm</h2>
+      <select id="sort">
+        <option value="insertion">Insertion Sort</option>
+        <option value="quick">Quick Sort</option>
+        <option value="bubble">Bubble Sort</option>
+      </select><br/>
+
+      <div class="">
+        <button onclick="clickBuntton()" id="algoSelector">Click Me</button>
+      <button onclick="randomize()" id="ramdomButton">Ramdomized Array</button>
+      </div>
+      
       <h2 id="count"></h2>
       <h2 id="pivot"></h2>
-        <h2 id="comp"></h2>
+      <h2 id="comp"></h2>
 
-
-        <!-- <label>Enter any number</label><input type="text" id="number"> -->
-
-
-        <!-- <button onclick="enterNumber()">Add me</button>
-        <button onclick="findEle()">Find me</button> -->
       <canvas class="explore_area" id="myCanvas" width="2000" height="750" />
         
   	</div>

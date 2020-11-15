@@ -1,6 +1,9 @@
 var c = document.getElementById("myCanvas");
 var ctx = c.getContext("2d");
 
+var c1 = document.getElementById("myCanvas1");
+var ctx1 = c.getContext("2d");
+
 sortArray = []
 let stats = []
 let col_width = 10;
@@ -11,6 +14,10 @@ const canvas_height = document.getElementById("myCanvas").height;
 let w = Math.floor(canvas_width / col_width);
 
 function init(){
+    if(sortArray.length > 0){
+        sortArray = [];
+        stats = [];
+    }
     for(let j = 0; j < w; ++j){
     let height = Math.floor(Math.random() * canvas_height) + 1;
     sortArray.push(height);
@@ -36,47 +43,55 @@ function update(time){
     }
     lastFrameTime = time; // remember the time of the rendered frame
     // render the frame
-    draw1();
+    draw1(ctx);
     requestAnimationFrame(update); // get next farme
 }
 
 requestAnimationFrame(update); // start animation
 
-quickSort(sortArray, 0, sortArray.length)
+function clickBuntton(){
+    comp = 0;
+    document.getElementById('count').innerHTML = "Total elements in the sorting are: ";
+        document.getElementById('comp').innerHTML = "Total comparison done: ";
+    let sortingtechnique = document.getElementById("sort").value;
+    if(sortingtechnique == "insertion") insertionSort(sortArray);
+    else if(sortingtechnique == "quick") quickSort(sortArray, 0, sortArray.length, 0);
+    else bubblesort(sortArray);
 
-//bubblesort(sortArray)
-//insertionSort(sortArray)
+    document.getElementById("algoSelector").disabled = true;
+    document.getElementById("ramdomButton").disabled = true;
+    
+}
 
-
-function draw1(){
-    ctx.clearRect(0, 0, canvas_width, canvas_height)
-    ctx.beginPath();
-    ctx.fillStyle = 'gray'
-    ctx.fillRect(0, 0, canvas_width, canvas_height)
+function draw1(value){
+    value.clearRect(0, 0, canvas_width, canvas_height)
+    value.beginPath();
+    value.fillStyle = 'gray'
+    value.fillRect(0, 0, canvas_width, canvas_height)
     for(let i = 0; i <= sortArray.length; ++i){
         
             
             if(stats[i] == 0){
-            ctx.fillStyle = '#e0777d';
-            ctx.fillRect(i * col_width, canvas_height, col_width, -sortArray[i])
-            ctx.lineWidth = 1;
-            ctx.strokeStyle = "black";
-            ctx.strokeRect(i * col_width, canvas_height, col_width, -sortArray[i]);
+            value.fillStyle = '#e0777d';
+            value.fillRect(i * col_width, canvas_height, col_width, -sortArray[i])
+            value.lineWidth = 1;
+            value.strokeStyle = "black";
+            value.strokeRect(i * col_width, canvas_height, col_width, -sortArray[i]);
             //document.getElementById('pivot').innerHTML = "Biggest element is: "+ (sortArray[i]);
         }
         else if(stats[i] == 1){
-            ctx.fillStyle = '#d6ffb7';
-            ctx.fillRect(i * col_width, canvas_height, col_width, -sortArray[i])
-            ctx.lineWidth = 1;
-            ctx.strokeStyle = "black";
-            ctx.strokeRect(i * col_width, canvas_height, col_width, -sortArray[i]);
+            value.fillStyle = '#d6ffb7';
+            value.fillRect(i * col_width, canvas_height, col_width, -sortArray[i])
+            value.lineWidth = 1;
+            value.strokeStyle = "black";
+            value.strokeRect(i * col_width, canvas_height, col_width, -sortArray[i]);
         }
         else{
-            ctx.fillStyle = 'white';
-            ctx.fillRect(i * col_width, canvas_height, col_width, -sortArray[i])
-            ctx.lineWidth = 1;
-            ctx.strokeStyle = "black";
-            ctx.strokeRect(i * col_width, canvas_height, col_width, -sortArray[i]);
+            value.fillStyle = 'white';
+            value.fillRect(i * col_width, canvas_height, col_width, -sortArray[i])
+            value.lineWidth = 1;
+            value.strokeStyle = "black";
+            value.strokeRect(i * col_width, canvas_height, col_width, -sortArray[i]);
         }
         document.getElementById('count').innerHTML = "Total elements in the sorting are: "+ sortArray.length;
         document.getElementById('comp').innerHTML = "Total comparison done: "+ comp;
@@ -84,12 +99,16 @@ function draw1(){
 
 }
 
-async function quickSort(array, start, end){
+async function quickSort(array, start, end, counter){
     if(start >= end) return
     let index = await partition(array, start, end)
     stats[index] = -1;
-    await quickSort(array, start, index - 1)
-    await quickSort(array, index + 1, end)
+    counter++;
+    await quickSort(array, start, index - 1, counter)
+    await quickSort(array, index + 1, end, counter)
+    if(counter == 1){
+    document.getElementById("ramdomButton").disabled = false;
+    }
 }
 
 async function partition(array, start, end){
@@ -127,6 +146,11 @@ function sleep(ms){
     return new Promise(resolve => setTimeout(resolve, ms))
 }
 
+function randomize(){
+    init();
+    document.getElementById("algoSelector").disabled = false;
+}
+
 async function bubblesort(array){
     let old_value;
     for(let i = 0; i < array.length; ++i){
@@ -155,6 +179,7 @@ async function bubblesort(array){
         }   
     }
     stats[0] = -1;
+    document.getElementById("ramdomButton").disabled = false;
 }
 
 
@@ -178,8 +203,7 @@ async function insertionSort(array){
             stats[k] = -1;
         }
     }
-
-   
+    document.getElementById("ramdomButton").disabled = false;
 }
 
 async function change(array, j, i){
